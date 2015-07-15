@@ -13,9 +13,9 @@ sh <(curl -sL http://install.opensource.sh/pkgsh/gcloud-custom-fqdn)
 ```
 
 ### Usage
-To take advantage of this you should set metadata with name `fqdn` on your instance. You can set it anytime.
+To take advantage of this you should set metadata with name `fqdn` on your instance. You have to set it after the creation
 
-This is the example on creation process:
+This is the example of creation process:
 ```sh
 gcloud compute instances create insance-name \
   --boot-disk-size 20GB \
@@ -23,7 +23,13 @@ gcloud compute instances create insance-name \
   --image centos-6 \
   --machine-type n1-standard-2 \
   --zone europe-west1-c \
-  --metadata fqdn='my.hostname.example.com',startup-script='sh <(curl -sL http://install.opensource.sh/pkgsh/gcloud-custom-fqdn)'
+  --metadata startup-script='sh <(curl -sL http://install.opensource.sh/pkgsh/gcloud-custom-fqdn)'
+```
+
+Add FQDN:
+
+```sh
+gcloud compute instances add-metadata insance-name --metadata fqdn='my.hostname.example.com'
 ```
 
 ### Contributing
