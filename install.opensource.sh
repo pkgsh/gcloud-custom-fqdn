@@ -2,9 +2,19 @@
 # Source : http://jcg.wtf/blog/2014/09/permanently-setting-fqdn-in-google-compute-engine/
 ###
 
-describe "Creating /etc/dhcp/dhclient-exit-hooks.d/zzz-set-fqdn"
+if [ ! -d /etc/dhcp/dhclient-exit-hooks.d ]; then
+  FILE=/etc/dhcp/dhclient-exit-hooks
+  if [ ! -f /etc/dhcp/dhclient-exit-hooks.backup ]; then
+    cp /etc/dhcp/dhclient-exit-hooks /etc/dhcp/dhclient-exit-hooks.backup
+    chmod -x /etc/dhcp/dhclient-exit-hooks.backup
+  fi
+else
+  FILE=/etc/dhcp/dhclient-exit-hooks.d/zzz-set-fqdn
+fi
 
-cat <<'EOF'> /etc/dhcp/dhclient-exit-hooks.d/zzz-set-fqdn
+describe "Creating $FILE"
+
+cat <<'EOF'> $FILE
 #! /bin/bash
 # Copyright 2013 Google Inc. All Rights Reserved.
 #
@@ -81,7 +91,7 @@ if [[ -n "$fqdn" ]]; then
 fi
 EOF
 
-chmod +x /etc/dhcp/dhclient-exit-hooks.d/zzz-set-fqdn
+chmod +x $FILE
 
 success "Done!"
 
